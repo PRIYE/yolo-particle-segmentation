@@ -1,0 +1,45 @@
+---
+description: 
+alwaysApply: true
+---
+
+# Specify commands in Cursor
+
+Cursor does not load `.specify/commands/`. When the user types any of the commands below, run the corresponding workflow by **reading the full prompt** from the linked `.specify/commands/*.toml` file and executing its steps. All paths and scripts are relative to the **repo root** (directory containing `.specify/`).
+
+## Command reference
+
+| Command | Description | TOML (read prompt from) |
+|---|----|----|
+| `/specify.constitution` | Create or update project governing principles and development guidelines | `.specify/commands/specify.constitution.toml` |
+| `/specify.specify` | Define what you want to build (requirements and user stories) | Use `.cursor/rules/specify-command.mdc` or `.specify/commands/specify.specify.toml` |
+| `/specify.plan` | Create technical implementation plans with your chosen tech stack | `.specify/commands/specify.plan.toml` |
+| `/specify.tasks` | Generate actionable task lists for implementation | `.specify/commands/specify.tasks.toml` |
+| `/specify.implement` | Execute all tasks to build the feature according to the plan | `.specify/commands/specify.implement.toml` |
+| `/specify.clarify` | Clarify underspecified areas (recommended before plan; formerly quizme) | `.specify/commands/specify.clarify.toml` |
+| `/specify.analyze` | Cross-artifact consistency & coverage analysis (after tasks, before implement) | `.specify/commands/specify.analyze.toml` |
+| `/specify.checklist` | Generate custom quality checklists (requirements completeness, clarity, consistency) | `.specify/commands/specify.checklist.toml` |
+
+## How to execute
+
+1. **Identify the command** from the user message (e.g. `/specify.plan`, `/specify.clarify`).
+2. **Read** the `prompt` field from the corresponding `.specify/commands/specify.<name>.toml` file.
+3. **Execute** the steps in that prompt exactly: run the required scripts (e.g. `setup-plan.sh --json`, `check-prerequisites.sh --json`), load the referenced templates and feature docs, and produce the required outputs (spec, plan, tasks, checklist, or report).
+4. **Use repo root** for all script invocations: e.g. `.specify/scripts/bash/create-new-feature.sh`, `.specify/scripts/bash/setup-plan.sh`, `.specify/scripts/bash/check-prerequisites.sh`.
+
+## Scripts (repo root)
+
+- **create-new-feature**: `.specify/scripts/bash/create-new-feature.sh --json [--number N] [--short-name "name"] "<feature description>"`
+- **setup-plan**: `.specify/scripts/bash/setup-plan.sh --json`
+- **check-prerequisites**: `.specify/scripts/bash/check-prerequisites.sh --json` (add `--require-tasks --include-tasks` for implement/analyze; `--paths-only` for clarify)
+- **update-agent-context**: `.specify/scripts/bash/update-agent-context.sh gemini`
+
+## Typical order
+
+1. `/specify.specify` or `/specify` → spec
+2. `/specify.clarify` (optional) → clarified spec
+3. `/specify.plan` → plan, research, data-model, contracts
+4. `/specify.tasks` → tasks.md
+5. `/specify.analyze` (optional) → analysis report
+6. `/specify.checklist` (optional) → checklists
+7. `/specify.implement` → implementation

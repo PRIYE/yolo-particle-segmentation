@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.pt
+*.pth
+yolo11n-seg.pt
+runs/
+.venv/
+venv/
+*.egg-info/
+.DS_Store
+
+# Data and outputs
+data_material/
+data_material.zip
+data/
+outputs/
+outputs_test/

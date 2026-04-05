@@ -1,0 +1,8 @@
+ultralytics>=8.3.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+pytest>=7.4.0
+ruff>=0.4.0
+
+# Optional: Meta Segment Anything (for generate_annotations without --mock)
+# pip install git+https://github.com/facebookresearch/segment-anything.git
